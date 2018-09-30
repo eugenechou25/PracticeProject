@@ -14,6 +14,8 @@ from bs4 import BeautifulSoup
 import matplotlib.pyplot
 import jieba
 from collections import Counter
+from scipy.misc import imread
+from wordcloud import WordCloud
 
 Url="https://movie.douban.com/subject/1292052/comments"
 
@@ -64,13 +66,32 @@ def Draw(datas):
     plt.xlabel("words")
     plt.ylabel("frequency of words")
     plt.show()
+def Draw_wordcloud():
+    text=codecs.open('E:/Pics/Test.txt','r',encoding='utf-8').read()
+    segment=jieba.cut(text,cut_all=False)
+    cut_word="".join(segment)
+    font_path='D:/VSCode/CoolArt.ttf'
+    cloud=WordCloud(
+            font_path=font_path,
+            background_color='white',
+            mask=imread('133.jpg'),
+            max_words=90,
+            max_font_size=50,
+            width=800,
+            height=900
+            )
+    word_cloud=cloud.generate(cut_word)
+    word_cloud.to_file('wordcc.jpg')
+    plt.imshow(word_cloud)
+    plt.axis('off')
+    plt.show()
 def Main():
     Write_Text()
     with codecs.open('E:/Pics/Test.txt','r',encoding='utf-8') as fr:
         txt=fr.read()
         Fre=Parse(txt)
         Draw(Fre)
+    Draw_wordcloud()
 if __name__=='__main__':
     Main()
-    
-    
+ #2018年9月30日20:08  更新:  添加画出词云
